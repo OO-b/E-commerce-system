@@ -48,6 +48,7 @@ erDiagram
     Coupon {
         int couponId PK "쿠폰ID"
         varchar(50) couponNm "쿠폰명"
+        int discountRate "할인율"
         int issuedCount "쿠폰 총 발급수량"
         int remainingCount "쿠폰 잔여수량"
         timestamp issueDate "쿠폰발행일"
