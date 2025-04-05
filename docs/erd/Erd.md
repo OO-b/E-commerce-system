@@ -2,7 +2,6 @@
 ```mermaid
 
 erDiagram
-    direction TB
 
     User {
         int userId PK "사용자ID"
