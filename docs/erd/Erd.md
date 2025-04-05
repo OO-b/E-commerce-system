@@ -1,7 +1,5 @@
 ## ERD
 ```mermaid
-erDiagram
-    direction TB
 
 erDiagram
     direction TB
