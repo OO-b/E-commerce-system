@@ -10,7 +10,7 @@ import java.util.List;
 
 @Tag(name = "Product Controller", description = "Product Controller")
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController implements ProductInterface {
 
     /**

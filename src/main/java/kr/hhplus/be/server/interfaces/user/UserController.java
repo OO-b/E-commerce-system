@@ -9,7 +9,7 @@ import java.util.List;
 
 @Tag(name = "User Controller", description = "User Controller")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 public class UserController implements UserInterface {
 
     /**

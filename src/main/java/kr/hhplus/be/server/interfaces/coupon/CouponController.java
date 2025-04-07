@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Coupon Controller", description = "Coupon Controller")
 @RestController
-@RequestMapping("/coupon")
+@RequestMapping("/api/v1/coupon")
 public class CouponController implements CouponInterface {
 
     /**
