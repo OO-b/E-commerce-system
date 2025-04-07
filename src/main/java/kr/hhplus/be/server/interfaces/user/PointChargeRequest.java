@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.dto.request;
+package kr.hhplus.be.server.interfaces.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;

@@ -1,9 +1,7 @@
-package kr.hhplus.be.server.controller.api;
+package kr.hhplus.be.server.interfaces.user;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.hhplus.be.server.dto.common.BaseResponse;
-import kr.hhplus.be.server.dto.request.OrderRequest;
-import kr.hhplus.be.server.dto.request.PointChargeRequest;
+import kr.hhplus.be.server.interfaces.common.BaseResponse;
 
 public interface UserInterface {
 

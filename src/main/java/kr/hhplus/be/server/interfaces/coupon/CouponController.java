@@ -1,10 +1,7 @@
-package kr.hhplus.be.server.controller;
+package kr.hhplus.be.server.interfaces.coupon;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.hhplus.be.server.controller.api.CouponInterface;
-import kr.hhplus.be.server.dto.request.CouponRequest;
-import kr.hhplus.be.server.dto.response.CouponResponse;
-import kr.hhplus.be.server.dto.common.BaseResponse;
+import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Coupon Controller", description = "Coupon Controller")

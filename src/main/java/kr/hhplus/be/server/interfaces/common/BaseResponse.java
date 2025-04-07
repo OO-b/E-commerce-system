@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.dto.common;
+package kr.hhplus.be.server.interfaces.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

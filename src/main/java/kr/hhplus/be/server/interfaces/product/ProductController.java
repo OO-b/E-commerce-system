@@ -1,10 +1,7 @@
-package kr.hhplus.be.server.controller;
+package kr.hhplus.be.server.interfaces.product;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.hhplus.be.server.controller.api.ProductInterface;
-import kr.hhplus.be.server.dto.response.AllProductResponse;
-import kr.hhplus.be.server.dto.common.BaseResponse;
-import kr.hhplus.be.server.dto.response.TopProductResponse;
+import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

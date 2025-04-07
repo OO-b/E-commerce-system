@@ -1,14 +1,8 @@
-package kr.hhplus.be.server.controller;
+package kr.hhplus.be.server.interfaces.user;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kr.hhplus.be.server.controller.api.UserInterface;
-import kr.hhplus.be.server.dto.common.BaseResponse;
-import kr.hhplus.be.server.dto.request.OrderRequest;
-import kr.hhplus.be.server.dto.request.PointChargeRequest;
-import kr.hhplus.be.server.dto.response.OrderResponse;
-import kr.hhplus.be.server.dto.response.PointChargeResponse;
-import kr.hhplus.be.server.dto.response.UserCouponResponse;
+import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
