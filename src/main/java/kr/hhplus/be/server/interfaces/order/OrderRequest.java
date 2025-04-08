@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.interfaces.user;
+package kr.hhplus.be.server.interfaces.order;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
