@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PointServiceTest {
+class UserPointTest {
 
     @Test
     @DisplayName("[성공] 이미 포인트가 존재하는 경우, 포인트를 충전하면 성공")
