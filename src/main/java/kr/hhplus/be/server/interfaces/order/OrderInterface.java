@@ -6,6 +6,6 @@ import kr.hhplus.be.server.interfaces.common.BaseResponse;
 public interface OrderInterface {
 
     @Operation(summary = "사용자 주문 조회 API", method = "GET")
-    BaseResponse<?> orderProduct(int userId, OrderRequest orderRequest);
+    BaseResponse<?> orderProduct(OrderRequest orderRequest);
 
 }
