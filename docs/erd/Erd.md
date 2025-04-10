@@ -45,6 +45,7 @@ erDiagram
     order {
         int orderId PK "주문ID"
         int customerId "주문자ID"
+        varchar status "상태"
         int orderDate "주문일시"
     }
     
@@ -53,6 +54,7 @@ erDiagram
         int orderId "주문ID"
         int productId "상품ID"
         varchar(50) productName "상품명"
+        varchar(50) productOptionName "상품옵션명"
         int productPrice "상품금액"
         int productAmount "상품수량"
     }
@@ -73,9 +75,10 @@ erDiagram
         timestamp issueDate "쿠폰발행일"
         timestamp expirationDate "쿠폰만료일"
     }
-    
+
+
     userCoupon {
-        int couponId PK "쿠폰ID"
+        int couponId "쿠폰ID"
         int userId "사용자ID"
         char status "쿠폰상태"
         datetime issuedAt "발급일시"
@@ -90,6 +93,11 @@ erDiagram
     coupon ||--o{ userCoupon : has
     product ||--|{ productOption : has
     userPoint ||--|{ userPointHist : has
+
+
+
+
+
 
 ```
 
