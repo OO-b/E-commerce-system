@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.domain.point;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,16 +11,14 @@ import java.time.LocalDateTime;
 @Getter
 public class UserPointHist {
 
-    public enum Type {
-        CHARGE, USE
-    }
 
     private int userId;
     private int amount;
-    private Type type;
+    @Enumerated(EnumType.STRING)
+    private PointHistoryType type;
     private LocalDateTime createdAt;
 
-    public static UserPointHist of(int userId, int amount) {
-        return new UserPointHist(userId, amount, Type.CHARGE, LocalDateTime.now());
+    public static UserPointHist of(int userId, int amount, PointHistoryType type) {
+        return new UserPointHist(userId, amount, type, LocalDateTime.now());
     }
 }

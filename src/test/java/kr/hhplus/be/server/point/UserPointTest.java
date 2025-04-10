@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.point.UserPointTest;
+package kr.hhplus.be.server.point;
 
 import kr.hhplus.be.server.domain.point.*;
 import org.junit.jupiter.api.DisplayName;

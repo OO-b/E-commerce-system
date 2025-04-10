@@ -1,9 +1,10 @@
-package kr.hhplus.be.server.point.pointServiceTest;
+package kr.hhplus.be.server.point;
 
 import kr.hhplus.be.server.domain.point.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -60,6 +61,58 @@ class PointServiceTest {
         // when & then
         assertThrows(IllegalArgumentException.class, () -> pointService.charge(command));
     }
+
+
+    @Test
+    @DisplayName("[성공] 이미 사용자 포인트가 존재할때 포인트 사용시 포인트 차감되는 케이스")
+    void givenExistingUserPoint_whenUsePoint_thenDecreasePoint_success() {
+        // given
+        int userId = 1;
+        int currentPoint = 1000;
+        int usagePoint = 300;
+
+        UserPoint userPoint = new UserPoint(userId, currentPoint);
+        PointUsageCommand command = new PointUsageCommand(userId, usagePoint);
+
+        when(userPointRepository.findByUserId(userId)).thenReturn(Optional.of(userPoint));
+
+        // when
+        pointService.usePoints(command);
+
+        // then
+        assertEquals(700, userPoint.getPoint());
+        ArgumentCaptor<UserPointHist> captor = ArgumentCaptor.forClass(UserPointHist.class);
+        verify(userPointHistRepository).save(captor.capture());
+
+        UserPointHist savedHist = captor.getValue();
+        assertEquals(userId, savedHist.getUserId());
+        assertEquals(-usagePoint, savedHist.getAmount());
+        assertEquals(PointHistoryType.USE, savedHist.getType());
+    }
+
+    @Test
+    @DisplayName("[실패] 사용하려는 포인트가 충전된 포인트보다 더 많을 때, IllegalStateException 에러발생")
+    void givenNotEnoughPoint_whenUsePoint_thenFailure() {
+        // given
+        int userId = 1;
+        int currentPoint = 100;
+        int usagePoint = 500;
+
+        UserPoint userPoint = new UserPoint(userId, currentPoint);
+        PointUsageCommand command = new PointUsageCommand(userId, usagePoint);
+
+        when(userPointRepository.findByUserId(userId)).thenReturn(Optional.of(userPoint));
+
+        // expect
+        assertThrows(IllegalStateException.class, () -> pointService.usePoints(command));
+    }
+
+
+
+
+
+
+
 
 
 }

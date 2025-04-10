@@ -2,9 +2,12 @@ package kr.hhplus.be.server.domain.point;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
+@Setter
+@AllArgsConstructor
+
 public class UserPoint {
 
     private int userId;

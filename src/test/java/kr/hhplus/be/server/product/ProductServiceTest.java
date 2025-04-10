@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.product;
 
 import kr.hhplus.be.server.domain.product.Product;
-import kr.hhplus.be.server.domain.product.ProductOption.ProductOption;
-import kr.hhplus.be.server.domain.product.ProductOption.ProductOptionRepository;
+import kr.hhplus.be.server.domain.product.ProductOption;
+import kr.hhplus.be.server.domain.product.ProductOptionRepository;
 import kr.hhplus.be.server.domain.product.ProductRepository;
 import kr.hhplus.be.server.domain.product.ProductService;
 import org.junit.jupiter.api.DisplayName;
@@ -40,13 +40,13 @@ class ProductServiceTest {
 
         when(productRepository.findAll()).thenReturn(List.of(nike,adidas));
         when(productOptionRepository.findByProductId(1)).thenReturn(
-                List.of(new ProductOption(1,"맨투맨 블랙", 30000, 100),
-                        new ProductOption(2,"맨투맨 레드", 20000, 100)
+                List.of(new ProductOption(1,1,"맨투맨 블랙", 30000, 100),
+                        new ProductOption(2,2,"맨투맨 레드", 20000, 100)
                 )
         );
         when(productOptionRepository.findByProductId(2)).thenReturn(
-                List.of(new ProductOption(2,"후디 화이트", 50000, 100),
-                        new ProductOption(2,"후디 엘로우", 40000, 100)
+                List.of(new ProductOption(2,3,"후디 화이트", 50000, 100),
+                        new ProductOption(2,4,"후디 엘로우", 40000, 100)
                 )
         );
 
