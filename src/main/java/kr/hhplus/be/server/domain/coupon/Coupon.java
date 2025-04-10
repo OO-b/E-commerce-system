@@ -21,4 +21,11 @@ public class Coupon {
         return expirationDate.isBefore(now);
     }
 
+    public void issueOne() {
+        if (remainingCount <= 0) {
+            throw new IllegalStateException("쿠폰 재고가 부족합니다.");
+        }
+        this.remainingCount -= 1;
+    }
+
 }

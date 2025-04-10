@@ -12,4 +12,6 @@ import lombok.Setter;
 public class CouponRequest {
     @Schema(description ="사용자 일련번호")
     private int userId;
+    @Schema(description = "쿠폰 일련번호")
+    private int couponId;
 }
