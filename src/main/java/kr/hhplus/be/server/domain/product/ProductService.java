@@ -31,9 +31,9 @@ public class ProductService {
      * 재고차감 메소드
      * */
     @Transactional
-    public void decreaseProduct(List<OrderOptionCommand> commands) {
+    public void decreaseProduct(List<ProductCommand.OrderOption> commands) {
 
-        for (OrderOptionCommand command : commands) {
+        for (ProductCommand.OrderOption command : commands) {
             ProductOption option = productOptionRepository.findByProductOptionId(command.getProductOptionId())
                     .orElseThrow(() -> new IllegalArgumentException("상품 옵션이 존재하지 않음"));
 

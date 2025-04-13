@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.payment;
 
 import kr.hhplus.be.server.domain.payment.Payment;
+import kr.hhplus.be.server.domain.payment.PaymentCommand;
 import kr.hhplus.be.server.domain.payment.PaymentRepository;
 import kr.hhplus.be.server.domain.payment.PaymentService;
-import kr.hhplus.be.server.domain.payment.RecordPaymentCommand;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class PaymentServiceTest {
         int orderId = 123;
         int totalPayment = 5000;
 
-        RecordPaymentCommand command = new RecordPaymentCommand(orderId, totalPayment);
+        PaymentCommand.Record command = new PaymentCommand.Record(orderId, totalPayment);
 
         // when
         paymentService.savePayment(command);
@@ -50,7 +50,7 @@ class PaymentServiceTest {
     @DisplayName("[성공] 결제 금액이 음수인경우 IllegalArgumentException 에러발생")
     void givenNegativePaymentAmount_whenPay_thenFailure() {
         // given
-        RecordPaymentCommand command = new RecordPaymentCommand(1, -1000);
+        PaymentCommand.Record command = new PaymentCommand.Record(1, -1000);
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> paymentService.savePayment(command));

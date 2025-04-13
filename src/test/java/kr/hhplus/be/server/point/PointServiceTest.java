@@ -34,7 +34,7 @@ class PointServiceTest {
         // given
         int userId = 1;
         int chargeAmount = 1000;
-        PointChargeCommand command = new PointChargeCommand(userId, chargeAmount);
+        PointCommand.Charge command = new PointCommand.Charge(userId, chargeAmount);
 
         UserPoint existingPoint = new UserPoint(userId, 500); // 기존 포인트 500
 
@@ -56,7 +56,7 @@ class PointServiceTest {
         // given
         int userId = 1;
         int point = -500;
-        PointChargeCommand command = new PointChargeCommand(userId, point);
+        PointCommand.Charge command = new PointCommand.Charge(userId, point);
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> pointService.charge(command));
@@ -72,7 +72,7 @@ class PointServiceTest {
         int usagePoint = 300;
 
         UserPoint userPoint = new UserPoint(userId, currentPoint);
-        PointUsageCommand command = new PointUsageCommand(userId, usagePoint);
+        PointCommand.Usage command = new PointCommand.Usage(userId, usagePoint);
 
         when(userPointRepository.findByUserId(userId)).thenReturn(Optional.of(userPoint));
 
@@ -99,7 +99,7 @@ class PointServiceTest {
         int usagePoint = 500;
 
         UserPoint userPoint = new UserPoint(userId, currentPoint);
-        PointUsageCommand command = new PointUsageCommand(userId, usagePoint);
+        PointCommand.Usage command = new PointCommand.Usage(userId, usagePoint);
 
         when(userPointRepository.findByUserId(userId)).thenReturn(Optional.of(userPoint));
 

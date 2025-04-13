@@ -38,7 +38,7 @@ public class CouponServiceTest {
         // given
         int userId = 1;
         int couponId = 100;
-        UseCouponCommand command = new UseCouponCommand(userId, couponId);
+        CouponCommand.Usage command = new CouponCommand.Usage(userId, couponId);
 
         Coupon coupon = new Coupon(couponId, "10% 할인", 10, 100, 100, LocalDateTime.now(), LocalDateTime.now().plusDays(1)); // 직접 생성
         UserCoupon userCoupon = new UserCoupon(couponId, userId, CouponStatus.AVAILABLE, LocalDateTime.now()); // 직접 생성
@@ -47,11 +47,11 @@ public class CouponServiceTest {
         when(userCouponRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(Optional.of(userCoupon));
 
         // when
-        Optional<Coupon> result = couponService.validateAndGetDiscount(command);
+        Coupon result = couponService.validateAndGetDiscount(command);
 
         // then
-        assertTrue(result.isPresent());
-        assertEquals(coupon, result.get());
+        assertNotNull(result);
+        assertEquals(coupon, result);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CouponServiceTest {
         // given
         int couponId = 100;
         int userId = 1;
-        UseCouponCommand command = new UseCouponCommand(userId, couponId);
+        CouponCommand.Usage command = new CouponCommand.Usage(userId, couponId);
 
         Coupon coupon = new Coupon(couponId, "10% 할인", 10, 100, 100, LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1)); // 직접 생성
         UserCoupon userCoupon = new UserCoupon(couponId, userId, CouponStatus.USED, LocalDateTime.now().minusDays(1));
@@ -69,10 +69,10 @@ public class CouponServiceTest {
         when(userCouponRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(Optional.of(userCoupon));
 
         // when
-        Optional<Coupon> result = couponService.validateAndGetDiscount(command);
+        Coupon result = couponService.validateAndGetDiscount(command);
 
         // then
-        assertFalse(result.isPresent());
+        assertNull(result);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class CouponServiceTest {
         // given
         int couponId = 1;
         int userId = 123;
-        CouponIssueCommand command = new CouponIssueCommand(userId, couponId);
+        CouponCommand.Issue command = new CouponCommand.Issue(userId, couponId);
 
         Coupon coupon = new Coupon(couponId, "10% 할인", 10, 100, 10,
                 LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
@@ -101,7 +101,7 @@ public class CouponServiceTest {
     @DisplayName("[실패] 쿠폰이 만료되었으면 IllegalStateException 예외 발생하는 케이스")
     void whenExpired_thenFailure() {
         // given
-        CouponIssueCommand command = new CouponIssueCommand(123, 1);
+        CouponCommand.Issue command = new CouponCommand.Issue(123, 1);
         Coupon expiredCoupon = new Coupon(1, "expired", 10, 100, 10,
                 LocalDateTime.now().minusDays(5), LocalDateTime.now().minusDays(1));
 
@@ -115,7 +115,7 @@ public class CouponServiceTest {
     @DisplayName("[실패] 쿠폰 재고가 부족한 경우 IllegalStateException 예외 발생하는 케이스")
     void issueCoupon_noStock() {
         // given
-        CouponIssueCommand command = new CouponIssueCommand(123, 1);
+        CouponCommand.Issue command = new CouponCommand.Issue(123, 1);
 
         Coupon coupon = spy(new Coupon(1, "10% 할인", 10, 100, 0,
                 LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
@@ -154,7 +154,7 @@ public class CouponServiceTest {
             int userId = i + 1;
             executor.execute(() -> {
                 try {
-                    couponService.issueCoupon(new CouponIssueCommand(userId, couponId));
+                    couponService.issueCoupon(new CouponCommand.Issue(userId, couponId));
                     successCount.incrementAndGet();
                 } catch (Exception ignored) {
                 } finally {

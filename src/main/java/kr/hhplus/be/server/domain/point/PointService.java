@@ -13,7 +13,7 @@ public class PointService {
     /**
      * 포인트 충전
      * */
-    public UserPoint charge(PointChargeCommand command) {
+    public UserPoint charge(PointCommand.Charge command) {
 
         // 포인트 조회 (없는 경우 생성)
         UserPoint userPoint = userPointRepository.findByUserId(command.getUserId()).orElse(new UserPoint(command.getUserId(), 0));
@@ -37,7 +37,7 @@ public class PointService {
     /**
      * 포인트 사용
      * */
-    public void usePoints(PointUsageCommand pointUsageCommand) {
+    public void usePoints(PointCommand.Usage pointUsageCommand) {
         UserPoint userPoint = userPointRepository.findByUserId(pointUsageCommand.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자 포인트 정보가 없습니다."));
 

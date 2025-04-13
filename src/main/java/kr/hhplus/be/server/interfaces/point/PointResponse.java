@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PointChargeResponse {
+public class PointResponse {
 
     @Schema(description = "충전된 포인트")
     private int chargedPoint;

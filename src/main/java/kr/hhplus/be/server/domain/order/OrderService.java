@@ -15,7 +15,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public OrderInfo order(OrderCommand command) {
+    public OrderInfo order(OrderCommand.Detail command) {
 
         OrderEntity order = new OrderEntity(command.getUserId(),
                                             OrderStatus.ORDERED,
@@ -41,9 +41,8 @@ public class OrderService {
                 .mapToInt(item -> item.getProductPrice() * item.getQuantity())
                 .sum();
 
-        if (command.getCoupon().isPresent()) {
-            Coupon coupon = command.getCoupon().get();
-            int discountRate = coupon.getDiscountRate();
+        if (command.getCoupon() != null) {
+            int discountRate = command.getCoupon().getDiscountRate();
 
             int discountAmount = (int) Math.round(totalAmount * (discountRate / 100.0));
             totalAmount = Math.max(0, totalAmount - discountAmount);

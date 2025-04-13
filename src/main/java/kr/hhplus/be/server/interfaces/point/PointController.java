@@ -22,10 +22,10 @@ public class PointController implements PointInterface {
     @Override
     @PostMapping("/{userId}")
     public BaseResponse<?> chargeUserPoint(@PathVariable int userId,
-                                           @RequestBody @Valid PointChargeRequest pointChargeRequest) {
+                                           @RequestBody @Valid PointRequest pointRequest) {
 
-        UserPoint userPoint = pointService.charge(PointChargeRequest.of(userId, pointChargeRequest.getPoint()));
-        return BaseResponse.of("0","정상적으로 충전되었습니다.", new PointChargeResponse(pointChargeRequest.getPoint(), userPoint.getPoint()));
+        UserPoint userPoint = pointService.charge(PointRequest.of(userId, pointRequest.getPoint()));
+        return BaseResponse.of("0","정상적으로 충전되었습니다.", new PointResponse(pointRequest.getPoint(), userPoint.getPoint()));
     }
 
     /**

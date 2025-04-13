@@ -3,14 +3,15 @@ package kr.hhplus.be.server.application.order;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.domain.coupon.Coupon;
+import kr.hhplus.be.server.domain.coupon.CouponCommand;
 import kr.hhplus.be.server.domain.coupon.CouponService;
-import kr.hhplus.be.server.domain.coupon.UseCouponCommand;
 import kr.hhplus.be.server.domain.order.*;
+import kr.hhplus.be.server.domain.payment.PaymentCommand;
 import kr.hhplus.be.server.domain.payment.PaymentService;
-import kr.hhplus.be.server.domain.payment.RecordPaymentCommand;
+import kr.hhplus.be.server.domain.point.PointCommand;
 import kr.hhplus.be.server.domain.point.PointService;
-import kr.hhplus.be.server.domain.point.PointUsageCommand;
-import kr.hhplus.be.server.domain.product.OrderOptionCommand;
+import kr.hhplus.be.server.domain.product.ProductCommand;
+import kr.hhplus.be.server.domain.product.ProductInfo;
 import kr.hhplus.be.server.domain.product.ProductOptionInfo;
 import kr.hhplus.be.server.domain.product.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -33,19 +34,21 @@ public class OrderFacade {
     @Transactional
     public OrderResult order(OrderCriteria criteria) {
 
-        List<OrderOptionCommand> orderOptionCommand = criteria.toCommandList();
+        List<ProductCommand.OrderOption> orderOptionCommand = criteria.toCommandList();
 
         // 재고차감
         productService.decreaseProduct(orderOptionCommand);
 
         //유효한 쿠폰인지 확인
-        Optional<Coupon> coupon = Optional.empty();
-        if(criteria.getCouponId() != null) {
-            coupon = couponService.validateAndGetDiscount(new UseCouponCommand(criteria.getUserId(), criteria.getCouponId()));
+        Coupon coupon = null;
+        if (criteria.getCouponId() != null) {
+            coupon = couponService.validateAndGetDiscount(
+                    new CouponCommand.Usage(criteria.getUserId(), criteria.getCouponId())
+            );
         }
 
         // 주문
-        List<OrderProductCommand> orderItems = criteria.getItems().stream()
+        List<ProductInfo.OrderProduct> orderItems = criteria.getItems().stream()
                 .flatMap(orderProduct -> {
                     int productId = orderProduct.getProductId();
                     String productName = productService.getProductNameById(productId);
@@ -53,7 +56,7 @@ public class OrderFacade {
                     return orderProduct.getOptions().stream().map(option -> {
                         ProductOptionInfo optionInfo = productService.getOptionInfoById(option.getOptionId());
 
-                        return new OrderProductCommand(
+                        return new ProductInfo.OrderProduct(
                                 productId,
                                 productName,
                                 optionInfo.getOptionName(),
@@ -64,13 +67,13 @@ public class OrderFacade {
                 })
                 .collect(Collectors.toList());
 
-        OrderInfo orderInfo = orderService.order(new OrderCommand(criteria.getUserId(), orderItems, coupon));
+        OrderInfo orderInfo = orderService.order(new OrderCommand.Detail(criteria.getUserId(), orderItems, coupon));
 
         // 포인트 차감
-        pointService.usePoints(new PointUsageCommand(criteria.getUserId(), orderInfo.getTotalAmount()));
+        pointService.usePoints(new PointCommand.Usage(criteria.getUserId(), orderInfo.getTotalAmount()));
 
         // 결제
-        paymentService.savePayment(new RecordPaymentCommand(orderInfo.getOrderId(), orderInfo.getTotalAmount()));
+        paymentService.savePayment(new PaymentCommand.Record(orderInfo.getOrderId(), orderInfo.getTotalAmount()));
 
         return new OrderResult(
                 orderInfo.getOrderId(),
