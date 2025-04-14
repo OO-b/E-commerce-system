@@ -55,4 +55,5 @@ class PaymentServiceTest {
         // when & then
         assertThrows(IllegalArgumentException.class, () -> paymentService.savePayment(command));
     }
+
 }

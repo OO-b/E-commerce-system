@@ -86,7 +86,7 @@ class PointServiceTest {
 
         UserPointHist savedHist = captor.getValue();
         assertEquals(userId, savedHist.getUserId());
-        assertEquals(-usagePoint, savedHist.getAmount());
+        assertEquals(-usagePoint, savedHist.getPoint());
         assertEquals(PointHistoryType.USE, savedHist.getType());
     }
 

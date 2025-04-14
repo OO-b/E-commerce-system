@@ -1,10 +1,6 @@
 package kr.hhplus.be.server.product;
 
-import kr.hhplus.be.server.domain.product.Product;
-import kr.hhplus.be.server.domain.product.ProductOption;
-import kr.hhplus.be.server.domain.product.ProductOptionRepository;
-import kr.hhplus.be.server.domain.product.ProductRepository;
-import kr.hhplus.be.server.domain.product.ProductService;
+import kr.hhplus.be.server.domain.product.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,13 +31,13 @@ class ProductServiceTest {
     void givenExistingProduct_whenFindAllProducts_thenGetAll_success(){
 
         // given
-        Product nike = new Product(1, "나이키", null);
-        Product adidas = new Product(2, "아디다스", null);
+        Product nike = new Product(1, "나이키");
+        Product adidas = new Product(2, "아디다스");
 
         when(productRepository.findAll()).thenReturn(List.of(nike,adidas));
         when(productOptionRepository.findByProductId(1)).thenReturn(
-                List.of(new ProductOption(1,1,"맨투맨 블랙", 30000, 100),
-                        new ProductOption(2,2,"맨투맨 레드", 20000, 100)
+                List.of(new ProductOption(1,1, "맨투맨 블루", 20000, 100),
+                        new ProductOption(1,2, "맨투맨 블랙", 30000, 100)
                 )
         );
         when(productOptionRepository.findByProductId(2)).thenReturn(
@@ -51,10 +47,8 @@ class ProductServiceTest {
         );
 
         //when
-        List<Product> result = productService.getAllProducts();
+        List<ProductInfo.ProductResult> result = productService.getAllProducts();
 
-        System.out.println(result.get(0));
-        System.out.println(result.get(1));
 
         // then
         assertThat(result).hasSize(2);

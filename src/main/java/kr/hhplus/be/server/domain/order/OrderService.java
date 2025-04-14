@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.domain.order;
 
-import kr.hhplus.be.server.domain.coupon.Coupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,8 @@ public class OrderService {
         OrderEntity savedOrder = orderRepository.save(order);
 
 
-        List<OrderItemEntity> orderItems = command.getOrderInfo().stream()
-                .map(productCommand -> new OrderItemEntity(
+        List<OrderItem> orderItems = command.getOrderInfo().stream()
+                .map(productCommand -> new OrderItem(
                         savedOrder.getOrderId(),
                         productCommand.getProductId(),
                         productCommand.getProductName(),

@@ -42,7 +42,7 @@ erDiagram
         datetime updated_at "수정일시"
     }
 
-    order {
+    userOrder {
         int orderId PK "주문ID"
         int customerId "주문자ID"
         varchar status "상태"

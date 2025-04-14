@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "orderItem")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItemEntity {
+public class OrderItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemId;
@@ -20,7 +20,7 @@ public class OrderItemEntity {
     private int productPrice;
     private int productAmount;
 
-    public OrderItemEntity(int orderId, int productId, String productName, String productOptionName, int productPrice, int productAmount) {
+    public OrderItem(int orderId, int productId, String productName, String productOptionName, int productPrice, int productAmount) {
         this.orderId = orderId;
         this.productId = productId;
         this.productName = productName;

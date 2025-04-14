@@ -1,9 +1,8 @@
 package kr.hhplus.be.server.domain.product;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 
@@ -17,5 +16,22 @@ public final class ProductInfo {
         private String optionName;
         private int productPrice;
         private int quantity;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ProductOptionResult {
+        private String optionNm;
+        private int price;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class ProductResult {
+        private int productId;
+        private String name;
+        List<ProductOptionResult> options;
     }
 }

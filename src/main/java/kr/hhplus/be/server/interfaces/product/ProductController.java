@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.interfaces.product;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.hhplus.be.server.domain.product.Product;
+import kr.hhplus.be.server.domain.product.ProductInfo;
 import kr.hhplus.be.server.domain.product.ProductService;
 import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +25,31 @@ public class ProductController implements ProductInterface {
      * */
     @Override
     @GetMapping
-    public BaseResponse<List<AllProductResponse>> getAllProducts() {
+    public BaseResponse<List<ProductResponse.AllProduct>> getAllProducts() {
 
-        List<Product> products = productService.getAllProducts();
+        List<ProductInfo.ProductResult> products = productService.getAllProducts();
 
-        // Mock API 구현을 위해 임시로 만든 데이터
-        List<AllProductResponse> allProductResponses = List.of(new AllProductResponse(1,
-                "스페셜 커피",
-                List.of(new AllProductResponse.Option("opt-001", "아메리카노", "3000", "25"),
-                        new AllProductResponse.Option("opt-002", "라떼", "3500", "12"))
-        ));
+        List<ProductResponse.AllProduct> allProducts =  products.stream()
+                .map(product -> {
+                    ProductResponse.AllProduct response = new ProductResponse.AllProduct();
+                    response.setProductId(product.getProductId());
+                    response.setName(product.getName());
 
-        return BaseResponse.of("0", "Success", allProductResponses);
+                    List<ProductResponse.ProductOption> optionResponses = product.getOptions().stream()
+                            .map(option -> {
+                                ProductResponse.ProductOption optionDto = new ProductResponse.ProductOption();
+                                optionDto.setOptionNm(option.getOptionNm());
+                                optionDto.setPrice(option.getPrice());
+                                return optionDto;
+                            })
+                            .toList();
+
+                    response.setOptions(optionResponses);
+                    return response;
+                })
+                .toList();
+
+        return BaseResponse.of("0","Success", allProducts);
     }
 
 

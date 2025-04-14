@@ -1,18 +1,27 @@
 package kr.hhplus.be.server.domain.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
+    @Id
     private int productId;
     private String name;
-    private List<ProductOption> options;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Product(int productId, String name) {
+        this.productId = productId;
+        this.name = name;
+    }
 
 }
