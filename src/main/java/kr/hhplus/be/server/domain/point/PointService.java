@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class PointService {
@@ -55,5 +56,13 @@ public class PointService {
         );
 
         userPointHistRepository.save(history);
+    }
+
+    /**
+     * 포인트 조회
+     * */
+    public UserPoint getPoint(int userId) {
+        return userPointRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("포인트 정보가 없습니다."));
     }
 }

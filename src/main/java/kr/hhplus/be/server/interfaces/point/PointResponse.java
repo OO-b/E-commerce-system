@@ -10,9 +10,24 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PointResponse {
 
-    @Schema(description = "충전된 포인트")
-    private int chargedPoint;
-    @Schema(description = "사용자 총 포인트")
-    private int totalPoint;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class charge{
+        @Schema(description = "충전된 포인트")
+        private int chargedPoint;
+        @Schema(description = "사용자 총 포인트")
+        private int totalPoint;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class check{
+        @Schema(description = "사용자 포인트")
+        private int userPoint;
+    }
+
+
 
 }
