@@ -72,8 +72,8 @@ erDiagram
         int discountRate "할인율"
         int issuedCount "쿠폰 총 발급수량"
         int remainingCount "쿠폰 잔여수량"
-        timestamp issueDate "쿠폰발행일"
-        timestamp expirationDate "쿠폰만료일"
+        datetime issueDate "쿠폰발행일"
+        datetime expirationDate "쿠폰만료일"
     }
 
 
