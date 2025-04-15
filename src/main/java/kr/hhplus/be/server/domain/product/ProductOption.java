@@ -13,22 +13,23 @@ import java.time.LocalDateTime;
 public class ProductOption {
 
     @Id
-    private int productId;
-    @Column(nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productOptionId;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
+    private int productId;
+    @Column(nullable = false)
     private String optionNm;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private int price;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private int remaining;
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ProductOption(int productId, int productOptionId, String optionNm, int price, int remaining) {
-        this.productId = productId;
+    public ProductOption(int productOptionId, int productId, String optionNm, int price, int remaining) {
         this.productOptionId = productOptionId;
+        this.productId = productId;
         this.optionNm = optionNm;
         this.price = price;
         this.remaining = remaining;
@@ -37,9 +38,7 @@ public class ProductOption {
 
     public void decrease(int quantity) {
         if(quantity <=0) throw new IllegalArgumentException("수량은 0보다 커야합니다.");
-
         if (remaining < quantity) throw new IllegalStateException("재고가 부족합니다.");
-
         this.remaining -= quantity;
     }
 }

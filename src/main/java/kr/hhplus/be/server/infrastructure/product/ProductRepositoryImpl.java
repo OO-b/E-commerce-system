@@ -11,13 +11,22 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
+
+    private final ProductJpaRepository productJpaRepository;
+
     @Override
     public List<Product> findAll() {
-        return null;
+        return productJpaRepository.findAll();
     }
 
     @Override
     public Optional<Product> findById(int productId) {
-        return Optional.empty();
+        return productJpaRepository.findById(productId);
     }
+
+    @Override
+    public void save(Product product) {
+        productJpaRepository.save(product);
+    }
+
 }

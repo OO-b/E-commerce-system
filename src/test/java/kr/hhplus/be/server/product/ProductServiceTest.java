@@ -36,17 +36,17 @@ class ProductServiceTest {
 
         when(productRepository.findAll()).thenReturn(List.of(nike,adidas));
         when(productOptionRepository.findByProductId(1)).thenReturn(
-                List.of(new ProductOption(1,1, "맨투맨 블루", 20000, 100),
-                        new ProductOption(1,2, "맨투맨 블랙", 30000, 100)
+                List.of(new ProductOption(1, 1, "맨투맨 블루", 20000, 100),
+                        new ProductOption(2, 1, "맨투맨 블랙", 30000, 100)
                 )
         );
         when(productOptionRepository.findByProductId(2)).thenReturn(
-                List.of(new ProductOption(2,3,"후디 화이트", 50000, 100),
-                        new ProductOption(2,4,"후디 엘로우", 40000, 100)
+                List.of(new ProductOption(3,2,"후디 화이트", 50000, 100),
+                        new ProductOption(4,2,"후디 엘로우", 40000, 100)
                 )
         );
 
-        //when
+        // when
         List<ProductInfo.ProductResult> result = productService.getAllProducts();
 
 

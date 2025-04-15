@@ -12,23 +12,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductOptionRepositoryImpl implements ProductOptionRepository {
 
-    @Override
-    public List<ProductOption> findByProductId(int productId) {
-        return null;
-    }
+    private final ProductOptionJpaRepository productOptionJpaRepository;
 
     @Override
-    public Optional<ProductOption> findByProductOptionId(int productOptionId) {
-        return Optional.empty();
+    public List<ProductOption> findByProductId(int productId) {
+        return productOptionJpaRepository.findByProductId(productId);
     }
 
     @Override
     public Optional<ProductOption> findById(int optionId) {
-        return Optional.empty();
+        return productOptionJpaRepository.findById(optionId);
     }
 
-    @Override
-    public List<ProductOption> findAll() {
-        return null;
-    }
 }

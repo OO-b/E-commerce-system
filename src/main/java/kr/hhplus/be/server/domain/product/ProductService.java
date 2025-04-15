@@ -13,6 +13,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
 
+    /**
+     * 전체 상품 조회
+     * */
     public List<ProductInfo.ProductResult> getAllProducts() {
         List<Product> products = productRepository.findAll();
 
@@ -39,7 +42,7 @@ public class ProductService {
     public void decreaseProduct(List<ProductCommand.OrderOption> commands) {
 
         for (ProductCommand.OrderOption command : commands) {
-            ProductOption option = productOptionRepository.findByProductOptionId(command.getProductOptionId())
+            ProductOption option = productOptionRepository.findById(command.getProductOptionId())
                     .orElseThrow(() -> new IllegalArgumentException("상품 옵션이 존재하지 않음"));
 
             option.decrease(command.getQuantity()); // 재고 차감
