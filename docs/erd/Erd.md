@@ -77,6 +77,7 @@ erDiagram
     }
 
     user_coupon {
+        int user_coupon_id "사용자 쿠폰ID"
         int coupon_id "쿠폰ID"
         int user_id "사용자ID"
         char status "쿠폰상태"
