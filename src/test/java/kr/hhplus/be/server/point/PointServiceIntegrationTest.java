@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class PointServiceIntegrationTest {
 
@@ -53,19 +56,16 @@ public class PointServiceIntegrationTest {
 
     @Test
     @DisplayName("[성공] 포인트가 존재하는경우 사용자 포인트 조회 성공")
+    @Sql("/pointIntegrationTest.sql")
     void givenUserPoint_whenCheckPoint_thenSuccess() {
-        // given
-        int userId = 1;
-        UserPoint saved = new UserPoint(userId, 100);
-        userPointRepository.save(saved);
 
         // when
-        UserPoint result = pointService.getPoint(userId);
+        UserPoint result = pointService.getPoint(1);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.getUserId()).isEqualTo(userId);
-        assertThat(result.getPoint()).isEqualTo(100);
+        assertThat(result.getUserId()).isEqualTo(1);
+        assertThat(result.getPoint()).isEqualTo(1000);
     }
 
     @Test
