@@ -41,7 +41,7 @@ public class CouponServiceTest {
         CouponCommand.Usage command = new CouponCommand.Usage(userId, couponId);
 
         Coupon coupon = new Coupon(couponId, "10% 할인", 10, 100, 100, LocalDateTime.now(), LocalDateTime.now().plusDays(1)); // 직접 생성
-        UserCoupon userCoupon = new UserCoupon(couponId, userId, CouponStatus.AVAILABLE, LocalDateTime.now()); // 직접 생성
+        UserCoupon userCoupon = new UserCoupon(couponId, userId, CouponStatus.AVAILABLE); // 직접 생성
 
         when(couponRepository.findById(couponId)).thenReturn(Optional.of(coupon));
         when(userCouponRepository.findByUserIdAndCouponId(userId, couponId)).thenReturn(Optional.of(userCoupon));

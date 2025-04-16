@@ -42,8 +42,7 @@ public class CouponService {
         UserCoupon userCoupon = new UserCoupon(
                 coupon.getCouponId(),
                 command.getUserId(),
-                CouponStatus.AVAILABLE,
-                LocalDateTime.now()
+                CouponStatus.AVAILABLE
         );
 
         userCouponRepository.save(userCoupon);
