@@ -47,8 +47,14 @@ public class OrderService {
             totalAmount = Math.max(0, totalAmount - discountAmount);
         }
 
-        return new OrderInfo(savedOrder.getOrderId(),totalAmount);
+        return new OrderInfo(savedOrder.getOrderId(), totalAmount);
 
     }
 
+    public void failOrder(OrderInfo orderInfo) {
+        OrderEntity order = orderRepository.findById(orderInfo.getOrderId())
+                .orElseThrow(() -> new IllegalStateException("주문 정보를 찾지 못했습니다."));
+
+        order.markAsFailed();
+    }
 }

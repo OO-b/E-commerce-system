@@ -10,8 +10,16 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class OrderItemRepositoryImpl implements OrderItemRepository {
+
+    private final OrderItemJpaRepository orderItemJpaRepository;
+
     @Override
     public List<OrderItem> saveAll(List<OrderItem> orderItems) {
-        return null;
+        return orderItemJpaRepository.saveAll(orderItems);
+    }
+
+    @Override
+    public List<OrderItem> findByOrderId(int orderId) {
+        return orderItemJpaRepository.findByOrderId(orderId);
     }
 }

@@ -11,13 +11,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserCouponRepositoryImpl implements UserCouponRepository {
 
+    private final UserCouponJpaRepository userCouponJpaRepository;
+
     @Override
     public Optional<UserCoupon> findByUserIdAndCouponId(int userId, int couponId) {
-        return Optional.empty();
+        return userCouponJpaRepository.findByUserIdAndCouponId(userId, couponId);
     }
 
     @Override
     public void save(UserCoupon userCoupon) {
+        userCouponJpaRepository.save(userCoupon);
 
     }
 }
