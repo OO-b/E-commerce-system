@@ -46,7 +46,7 @@ erDiagram
         int order_id PK "주문ID"
         int customer_id "주문자ID"
         varchar status "상태"
-        int order_date "주문일시"
+        datetime order_date "주문일시"
     }
     
     order_item {
