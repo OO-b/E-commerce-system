@@ -8,5 +8,5 @@ public interface OrderItemRepository {
     OrderItem save(OrderItem orderItems);
     List<OrderItem> saveAll(List<OrderItem> orderItems);
     List<OrderItem> findByOrderId(int orderId);
-    List<OrderTopInfo> findTopPopularProducts(LocalDateTime period, Pageable pageable);
+    List<OrderTopInfo> findTopPopularProducts(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
 }

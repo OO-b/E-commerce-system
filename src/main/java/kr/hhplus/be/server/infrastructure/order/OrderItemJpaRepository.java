@@ -17,9 +17,9 @@ public interface OrderItemJpaRepository extends JpaRepository<OrderItem, Integer
         SELECT oi.productId AS productId, oi.productName AS productName, SUM(oi.productAmount) AS totalAmount
         FROM OrderItem oi
         JOIN UserOrder uo ON oi.orderId = uo.orderId
-        WHERE uo.orderDate >= :period
+        WHERE uo.orderDate BETWEEN :startDateTime AND :endDateTime
         GROUP BY oi.productId, oi.productName
         ORDER BY totalAmount DESC
     """)
-    List<OrderTopInfo> findTopPopularProducts(@Param("period") LocalDateTime period, Pageable pageable);
+    List<OrderTopInfo> findTopPopularProducts(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, Pageable pageable);
 }

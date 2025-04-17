@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,10 +63,15 @@ public class OrderService {
 
     public List<OrderTopInfo> getTopPopularProducts() {
 
-        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3); //최근 3일
+        LocalDate startDate = LocalDate.now().minusDays(3);
+        LocalDate endDate = LocalDate.now().minusDays(1);
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+
         Pageable pageable = PageRequest.of(0, 5); // 상위 5개
 
-        return orderItemRepository.findTopPopularProducts(threeDaysAgo, pageable);
+        return orderItemRepository.findTopPopularProducts(startDateTime, endDateTime, pageable);
 
     }
 }

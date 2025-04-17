@@ -32,8 +32,8 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     }
 
     @Override
-    public List<OrderTopInfo> findTopPopularProducts(LocalDateTime period, Pageable pageable) {
-        return orderItemJpaRepository.findTopPopularProducts(period, pageable);
+    public List<OrderTopInfo> findTopPopularProducts(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable) {
+        return orderItemJpaRepository.findTopPopularProducts(startDateTime, endDateTime, pageable);
     }
 
 
