@@ -8,13 +8,12 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
 @Entity
-@Table(name = "order")
+@Table(name = "user_order")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderEntity {
+public class UserOrder {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
@@ -23,9 +22,16 @@ public class OrderEntity {
     private OrderStatus status;
     private LocalDateTime orderDate;
 
-    public OrderEntity(int customerId,  OrderStatus status, LocalDateTime orderDate) {
+    public UserOrder(int customerId, OrderStatus status, LocalDateTime orderDate) {
         this.customerId = customerId;
         this.status = status;
         this.orderDate = orderDate;
+    }
+
+    public void markAsFailed() {
+        if (this.status == OrderStatus.PAID) {
+            throw new IllegalStateException("이미 결제완료된 주문은 변경할 수 없습니다.");
+        }
+        this.status = OrderStatus.PAYMENT_FAILED;
     }
 }

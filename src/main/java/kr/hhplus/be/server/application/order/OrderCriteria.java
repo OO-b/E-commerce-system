@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.application.order;
 
-import kr.hhplus.be.server.domain.product.OrderOptionCommand;
+import kr.hhplus.be.server.domain.product.ProductCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,10 +32,10 @@ public class OrderCriteria {
     }
 
 
-    public List<OrderOptionCommand> toCommandList() {
+    public List<ProductCommand.OrderOption> toCommandList() {
         return items.stream()
                 .flatMap(orderProduct -> orderProduct.getOptions().stream())
-                .map(orderOption -> new OrderOptionCommand(
+                .map(orderOption -> new ProductCommand.OrderOption(
                         orderOption.getOptionId(),
                         orderOption.getQuantity()
                 ))

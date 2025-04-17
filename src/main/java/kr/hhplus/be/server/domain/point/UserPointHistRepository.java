@@ -1,7 +1,9 @@
 package kr.hhplus.be.server.domain.point;
 
-import kr.hhplus.be.server.domain.point.UserPointHist;
+
+import java.util.List;
 
 public interface UserPointHistRepository {
     void save(UserPointHist userPointHist);
+    List<UserPointHist> findByUserId(int userPointId);
 }

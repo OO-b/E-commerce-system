@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
 
-    public void savePayment(RecordPaymentCommand command) {
+    public void savePayment(PaymentCommand.Record command) {
             Payment payment = Payment.of(
                     command.getOrderId(),
                     command.getTotalPayment()
