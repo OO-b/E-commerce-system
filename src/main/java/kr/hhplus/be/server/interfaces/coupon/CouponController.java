@@ -2,6 +2,7 @@ package kr.hhplus.be.server.interfaces.coupon;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.domain.coupon.CouponCommand;
+import kr.hhplus.be.server.domain.coupon.CouponInfo;
 import kr.hhplus.be.server.domain.coupon.CouponService;
 import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +41,10 @@ public class CouponController implements CouponInterface {
      * */
     @Override
     @PostMapping("/first-come")
-    public BaseResponse<CouponResponse> issueFirstComeCoupon(@RequestBody CouponRequest couponRequest) {
+    public BaseResponse<CouponResponse.IssuedCoupon> issueFirstComeCoupon(@RequestBody CouponRequest couponRequest) {
 
-        couponService.issueCoupon(new CouponCommand.Issue(couponRequest.getUserId(), couponRequest.getCouponId()));
+        CouponInfo.issuedCoupon issuedCoupon = couponService.issueCoupon(new CouponCommand.Issue(couponRequest.getUserId(), couponRequest.getCouponId()));
 
-        return BaseResponse.of("0","Success", new CouponResponse("봄이온다 쿠폰", 30,"2025-04-05 23:59:59"));
+        return BaseResponse.of("0","Success", new CouponResponse.IssuedCoupon(issuedCoupon.getCouponId(), issuedCoupon.getCouponNm(), issuedCoupon.getDiscountRate()));
     }
 }
