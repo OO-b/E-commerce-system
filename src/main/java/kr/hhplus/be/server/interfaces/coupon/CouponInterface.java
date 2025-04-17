@@ -9,5 +9,5 @@ public interface CouponInterface {
     BaseResponse<?> getUserCoupons(int userId);
 
     @Operation(summary = "선착순 쿠폰발급 API", method = "GET")
-    BaseResponse<CouponResponse> issueFirstComeCoupon(CouponRequest couponRequest);
+    BaseResponse<CouponResponse.IssuedCoupon> issueFirstComeCoupon(CouponRequest couponRequest);
 }

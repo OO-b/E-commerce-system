@@ -3,6 +3,7 @@ package kr.hhplus.be.server.domain.point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class PointService {
@@ -13,7 +14,7 @@ public class PointService {
     /**
      * 포인트 충전
      * */
-    public UserPoint charge(PointChargeCommand command) {
+    public UserPoint charge(PointCommand.Charge command) {
 
         // 포인트 조회 (없는 경우 생성)
         UserPoint userPoint = userPointRepository.findByUserId(command.getUserId()).orElse(new UserPoint(command.getUserId(), 0));
@@ -37,7 +38,7 @@ public class PointService {
     /**
      * 포인트 사용
      * */
-    public void usePoints(PointUsageCommand pointUsageCommand) {
+    public void usePoints(PointCommand.Usage pointUsageCommand) {
         UserPoint userPoint = userPointRepository.findByUserId(pointUsageCommand.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자 포인트 정보가 없습니다."));
 
@@ -55,5 +56,13 @@ public class PointService {
         );
 
         userPointHistRepository.save(history);
+    }
+
+    /**
+     * 포인트 조회
+     * */
+    public UserPoint getPoint(int userId) {
+        return userPointRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("포인트 정보가 없습니다."));
     }
 }

@@ -1,20 +1,21 @@
 package kr.hhplus.be.server.domain.order;
 
 import kr.hhplus.be.server.domain.coupon.Coupon;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import kr.hhplus.be.server.domain.product.ProductInfo;
+import lombok.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class OrderCommand {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class OrderCommand {
 
-    private int userId;
-    private List<OrderProductCommand> orderInfo;
-    private Optional<Coupon> coupon;
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Detail {
+        private int userId;
+        private List<ProductInfo.OrderProduct> orderInfo;
+        private Coupon coupon;
+    }
 
 }

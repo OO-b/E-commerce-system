@@ -8,6 +8,8 @@ import kr.hhplus.be.server.interfaces.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+
 @Tag(name = "Point Controller", description = "Point Controller")
 @RestController
 @RequestMapping("/api/v1/point")
@@ -21,11 +23,11 @@ public class PointController implements PointInterface {
      * */
     @Override
     @PostMapping("/{userId}")
-    public BaseResponse<?> chargeUserPoint(@PathVariable int userId,
-                                           @RequestBody @Valid PointChargeRequest pointChargeRequest) {
+    public BaseResponse<PointResponse.charge> chargeUserPoint(@PathVariable int userId,
+                                           @RequestBody @Valid PointRequest pointRequest) {
 
-        UserPoint userPoint = pointService.charge(PointChargeRequest.of(userId, pointChargeRequest.getPoint()));
-        return BaseResponse.of("0","정상적으로 충전되었습니다.", new PointChargeResponse(pointChargeRequest.getPoint(), userPoint.getPoint()));
+        UserPoint userPoint = pointService.charge(PointRequest.of(userId, pointRequest.getPoint()));
+        return BaseResponse.of("0","정상적으로 충전되었습니다.", new PointResponse.charge(pointRequest.getPoint(), userPoint.getPoint()));
     }
 
     /**
@@ -33,8 +35,9 @@ public class PointController implements PointInterface {
      * */
     @Override
     @GetMapping("/{userId}")
-    public BaseResponse<Integer> getUserPoint(@PathVariable int userId) {
-        return BaseResponse.of("0","정상적으로 조회하였습니다.", 100);
+    public BaseResponse<PointResponse.check> getUserPoint(@PathVariable int userId) {
+        UserPoint userPoint = pointService.getPoint(userId);
+        return BaseResponse.of("0","정상적으로 조회하였습니다.", new PointResponse.check(userPoint.getPoint()));
     }
 
 

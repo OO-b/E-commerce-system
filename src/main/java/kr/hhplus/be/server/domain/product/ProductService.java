@@ -1,12 +1,10 @@
 package kr.hhplus.be.server.domain.product;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,26 +13,36 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
 
-    public List<Product> getAllProducts() {
+    /**
+     * 전체 상품 조회
+     * */
+    public List<ProductInfo.ProductResult> getAllProducts() {
         List<Product> products = productRepository.findAll();
+
         return products.stream()
-                .map(product -> new Product(
-                        product.getProductId(),
-                        product.getName(),
-                        productOptionRepository.findByProductId(product.getProductId())
-                ))
-                .collect(Collectors.toList());
+                .map(product -> {
+                    List<ProductInfo.ProductOptionResult> options =
+                            productOptionRepository.findByProductId(product.getProductId()).stream()
+                                    .map(option -> new ProductInfo.ProductOptionResult(
+                                            option.getOptionNm(),
+                                            option.getPrice()
+                                    )).toList();
+                        return new ProductInfo.ProductResult(
+                                product.getProductId(),
+                                product.getName(),
+                                options
+                        );
+                }).toList();
     }
 
 
     /**
      * 재고차감 메소드
      * */
-    @Transactional
-    public void decreaseProduct(List<OrderOptionCommand> commands) {
+    public void decreaseProduct(List<ProductCommand.OrderOption> commands) {
 
-        for (OrderOptionCommand command : commands) {
-            ProductOption option = productOptionRepository.findByProductOptionId(command.getProductOptionId())
+        for (ProductCommand.OrderOption command : commands) {
+            ProductOption option = productOptionRepository.findById(command.getProductOptionId())
                     .orElseThrow(() -> new IllegalArgumentException("상품 옵션이 존재하지 않음"));
 
             option.decrease(command.getQuantity()); // 재고 차감
