@@ -3,7 +3,7 @@ package kr.hhplus.be.server.domain.order;
 import java.util.Optional;
 
 public interface OrderRepository {
-    OrderEntity save(OrderEntity order);
+    UserOrder save(UserOrder order);
 
-    Optional<OrderEntity> findById(int orderId);
+    Optional<UserOrder> findById(int orderId);
 }

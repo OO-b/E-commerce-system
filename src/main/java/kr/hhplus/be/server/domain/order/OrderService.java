@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.domain.order;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,11 +18,11 @@ public class OrderService {
 
     public OrderInfo order(OrderCommand.Detail command) {
 
-        OrderEntity order = new OrderEntity(command.getUserId(),
+        UserOrder order = new UserOrder(command.getUserId(),
                                             OrderStatus.ORDERED,
                                             LocalDateTime.now());
 
-        OrderEntity savedOrder = orderRepository.save(order);
+        UserOrder savedOrder = orderRepository.save(order);
 
 
         List<OrderItem> orderItems = command.getOrderInfo().stream()
@@ -52,9 +54,18 @@ public class OrderService {
     }
 
     public void failOrder(OrderInfo orderInfo) {
-        OrderEntity order = orderRepository.findById(orderInfo.getOrderId())
+        UserOrder order = orderRepository.findById(orderInfo.getOrderId())
                 .orElseThrow(() -> new IllegalStateException("주문 정보를 찾지 못했습니다."));
 
         order.markAsFailed();
+    }
+
+    public List<OrderTopInfo> getTopPopularProducts() {
+
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3); //최근 3일
+        Pageable pageable = PageRequest.of(0, 5); // 상위 5개
+
+        return orderItemRepository.findTopPopularProducts(threeDaysAgo, pageable);
+
     }
 }

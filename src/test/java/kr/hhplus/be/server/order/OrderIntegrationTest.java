@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +47,7 @@ public class OrderIntegrationTest {
         OrderInfo result = orderService.order(command);
 
         // then
-        Optional<OrderEntity> savedOrder = orderRepository.findById(result.getOrderId());
+        Optional<UserOrder> savedOrder = orderRepository.findById(result.getOrderId());
         List<OrderItem> savedItems = orderItemRepository.findByOrderId(result.getOrderId());
 
         assertThat(savedOrder).isPresent();
@@ -72,7 +73,7 @@ public class OrderIntegrationTest {
         OrderInfo result = orderService.order(command);
 
         // then
-        Optional<OrderEntity> savedOrder = orderRepository.findById(result.getOrderId());
+        Optional<UserOrder> savedOrder = orderRepository.findById(result.getOrderId());
         List<OrderItem> savedItems = orderItemRepository.findByOrderId(result.getOrderId());
 
         assertThat(savedOrder).isPresent();
@@ -81,4 +82,50 @@ public class OrderIntegrationTest {
         int expectedTotal = (8000 * 1 + 12000 * 2); // 8000 + 24000 = 32000
         assertThat(result.getTotalAmount()).isEqualTo(expectedTotal);
     }
+
+
+    @Test
+    @DisplayName("[성공] 인기상품 조회시 성공적으로 조회되는 케이스")
+    void givenOrder_whenGetPopularOrderProduct_thenSuccess() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Random random = new Random();
+
+        for (int i = 1; i <= 6; i++) {  // 6개 품목
+            UserOrder order = new UserOrder(
+                    i,
+                    OrderStatus.PAID, // 결제완료된 제품으로만
+                    now.minusDays(random.nextInt(3))
+            );
+
+            // 주문 저장
+            orderRepository.save(order);
+
+            int orderCount = random.nextInt(10) + 1;
+            for (int j = 0; j < orderCount; j++) {
+                OrderItem item = new OrderItem(
+                        order.getOrderId(),
+                        i,
+                        "테스트상품" + i,
+                        "옵션",
+                        1000,
+                        1
+                );
+
+                // 저장
+                orderItemRepository.save(item);
+            }
+        }
+
+        // when
+        List<OrderTopInfo> popularProducts = orderService.getTopPopularProducts();
+
+        // then
+        assertThat(popularProducts).isNotNull();
+        assertThat(popularProducts).hasSizeLessThanOrEqualTo(5);
+
+        // 예시 출력
+        popularProducts.forEach(p -> System.out.printf("상품: %s, 수량: %d\n", p.getProductName(), p.getTotalAmount()));
+    }
+
 }

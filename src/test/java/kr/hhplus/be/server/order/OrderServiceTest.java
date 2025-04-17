@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,10 +43,10 @@ public class OrderServiceTest {
 
         OrderCommand.Detail command = new OrderCommand.Detail(userId, products, null);
 
-        OrderEntity savedOrder = new OrderEntity(userId, OrderStatus.ORDERED, LocalDateTime.now());
+        UserOrder savedOrder = new UserOrder(userId, OrderStatus.ORDERED, LocalDateTime.now());
         savedOrder.setOrderId(999); // 저장된 주문 ID
 
-        when(orderRepository.save(any(OrderEntity.class))).thenReturn(savedOrder);
+        when(orderRepository.save(any(UserOrder.class))).thenReturn(savedOrder);
 
         // when
         OrderInfo result = orderService.order(command);
@@ -56,7 +55,7 @@ public class OrderServiceTest {
         assertEquals(999, result.getOrderId());
         assertEquals(5000, result.getTotalAmount());
 
-        verify(orderRepository).save(any(OrderEntity.class));
+        verify(orderRepository).save(any(UserOrder.class));
         verify(orderItemRepository).saveAll(anyList());
     }
 
@@ -71,10 +70,10 @@ public class OrderServiceTest {
 
         OrderCommand.Detail command = new OrderCommand.Detail(userId, List.of(product), coupon);
 
-        OrderEntity savedOrder = new OrderEntity(userId, OrderStatus.ORDERED, LocalDateTime.now());
+        UserOrder savedOrder = new UserOrder(userId, OrderStatus.ORDERED, LocalDateTime.now());
         savedOrder.setOrderId(123);
 
-        when(orderRepository.save(any(OrderEntity.class))).thenReturn(savedOrder);
+        when(orderRepository.save(any(UserOrder.class))).thenReturn(savedOrder);
 
         // when
         OrderInfo result = orderService.order(command);
@@ -83,7 +82,7 @@ public class OrderServiceTest {
         assertEquals(123, result.getOrderId());
         assertEquals(9000, result.getTotalAmount()); // 10% 할인
 
-        verify(orderRepository).save(any(OrderEntity.class));
+        verify(orderRepository).save(any(UserOrder.class));
         verify(orderItemRepository).saveAll(anyList());
     }
 }

@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class OrderInfo {
-
     private int orderId;
     private int totalAmount;
 }

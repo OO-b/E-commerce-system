@@ -52,20 +52,4 @@ public class ProductController implements ProductInterface {
         return BaseResponse.of("0","Success", allProducts);
     }
 
-
-    /**
-     * 상위 상품 조회
-     * */
-    @Override
-    @GetMapping("/top")
-    public BaseResponse<List<TopProductResponse>> getTopSellingProducts() {
-
-        List<TopProductResponse> allProductResponses = List.of(
-                new TopProductResponse(1,10,"나이키", 50000, 20),
-                new TopProductResponse(2,20, "컨버스", 45000,10),
-                new TopProductResponse(3,30,"뉴발란스", 20000, 5)
-        );
-
-        return BaseResponse.of("0","Success", allProductResponses);
-    }
 }

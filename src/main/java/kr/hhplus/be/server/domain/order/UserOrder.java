@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderEntity {
+public class UserOrder {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
@@ -22,7 +22,7 @@ public class OrderEntity {
     private OrderStatus status;
     private LocalDateTime orderDate;
 
-    public OrderEntity(int customerId,  OrderStatus status, LocalDateTime orderDate) {
+    public UserOrder(int customerId, OrderStatus status, LocalDateTime orderDate) {
         this.customerId = customerId;
         this.status = status;
         this.orderDate = orderDate;
