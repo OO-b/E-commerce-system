@@ -1,20 +1,34 @@
 package kr.hhplus.be.server.domain.coupon;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "coupon")
 public class Coupon {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int couponId;
+    @Column(nullable = false)
     private String couponNm;
+    @Column(nullable = false)
     private int discountRate;
+    @Column(nullable = false)
     private int issuedCount;
+    @Column(nullable = false)
     private int remainingCount;
+    @Column(nullable = false)
     private LocalDateTime issueDate;
+    @Column(nullable = false)
     private LocalDateTime expirationDate;
 
     public boolean isExpired(LocalDateTime now) {

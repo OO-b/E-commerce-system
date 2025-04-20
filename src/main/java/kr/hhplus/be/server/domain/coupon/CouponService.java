@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,7 +12,7 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
-    public Optional<Coupon> validateAndGetDiscount(UseCouponCommand command) {
+    public Coupon validateAndGetDiscount(CouponCommand.Usage command) {
 
         return couponRepository.findById(command.getCouponId())
                 .filter(coupon -> !coupon.isExpired(LocalDateTime.now()))
@@ -21,11 +20,10 @@ public class CouponService {
                         userCouponRepository.findByUserIdAndCouponId(command.getUserId(), command.getCouponId())
                                 .filter(UserCoupon::isUsable)
                                 .map(userCoupon -> coupon) // userCoupon이 조건 만족하면 coupon 리턴
-                );
-
+                ).orElse(null); // 아니라면 null 처리
     }
 
-    public void issueCoupon(CouponIssueCommand command) {
+    public CouponInfo.issuedCoupon issueCoupon(CouponCommand.Issue command) {
 
         Coupon coupon = couponRepository.findById(command.getCouponId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰이 존재하지 않습니다."));
@@ -44,11 +42,12 @@ public class CouponService {
         UserCoupon userCoupon = new UserCoupon(
                 coupon.getCouponId(),
                 command.getUserId(),
-                CouponStatus.AVAILABLE,
-                LocalDateTime.now()
+                CouponStatus.AVAILABLE
         );
 
         userCouponRepository.save(userCoupon);
+
+        return new CouponInfo.issuedCoupon(coupon.getCouponId(),coupon.getCouponNm(), coupon.getDiscountRate());
 
     }
 }
