@@ -27,6 +27,10 @@ public class UserPoint {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @Version
+    private Long version;
+
+
     public UserPoint(int userId, int initialPoint) {
         this.userId = userId;
         this.point = initialPoint;
