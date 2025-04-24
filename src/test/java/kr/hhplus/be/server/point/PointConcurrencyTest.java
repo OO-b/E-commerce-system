@@ -32,20 +32,13 @@ public class PointConcurrencyTest {
     @Autowired
     private UserPointHistRepository userPointHistRepository;
 
-    private int userId;
-
-
-    @BeforeEach
-    void setUp() {
-        UserPoint userPoint = new UserPoint(1, 0);
-        userPointRepository.save(userPoint);
-        userId = userPoint.getUserId();
-    }
-
-
     @Test
     @DisplayName("포인트 충전 따닥이슈일때 - 동시성 테스트") // 낙관적락
     void givenAvailableCoupon_whenIssuingCouponAtTheSameTime_thenFailure() throws InterruptedException {
+
+        UserPoint setUserPoint = new UserPoint(1, 0);
+        userPointRepository.save(setUserPoint);
+        int userId = setUserPoint.getUserId();
 
         int threadCount = 5; // 따닥으로 5회 충전 시도
         int chargePoint = 5000;
@@ -86,9 +79,70 @@ public class PointConcurrencyTest {
                 .sum();
 
         if(userPoint.isPresent()) {
-            int point = userPoint.get().getPoint();
-            assertThat(histTotalPoint).isEqualTo(point);
-            assertThat(point).isEqualTo(resultPoint);
+            int point = userPoint.get().getPoint(); // 사용자 잔액
+            assertThat(histTotalPoint).isEqualTo(point); // 충전 후 포인트 잔액과 사용내역 합산내역 일치
+            assertThat(point).isEqualTo(resultPoint); // 사용자 잔액과 성공 스레드 횟수 계산한 후 비교 일치
         }
+    }
+
+
+    @Test
+    @DisplayName("포인트 사용 - 동시성 테스트") // 낙관적락
+    void givenAvailableCoupon_whenIssuingCouponAtTheSameTime_thenFailure1() throws InterruptedException {
+
+        UserPoint setUserPoint = new UserPoint(1, 5000);
+        userPointRepository.save(setUserPoint);
+        int userId = setUserPoint.getUserId();
+
+        int threadCount = 5;
+        int usagePoint = 1000;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        AtomicInteger successCount = new AtomicInteger();
+
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    pointService.usePoints(new PointCommand.Usage(userId, usagePoint));
+                    successCount.incrementAndGet(); // 성공한 충전만 카운트
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        executorService.shutdown(); // 스레드 풀 종료
+
+        int resultPoint = successCount.get() * usagePoint;
+
+        Optional<UserPoint> userPoint = userPointRepository.findByUserId(userId);
+
+        List<UserPointHist> userPointHists = userPointHistRepository.findByUserId(1);
+        int histTotalPoint = userPointHists.stream()
+                .mapToInt(hist -> {
+                    if (hist.getType() == PointHistoryType.CHARGE) {
+                        return hist.getPoint();
+                    } else if (hist.getType() == PointHistoryType.USE) {
+                        return -hist.getPoint();
+                    } else {
+                        return 0;
+                    }
+                })
+                .sum();
+
+        int expectedPoint = setUserPoint.getPoint() - resultPoint;
+
+        if(userPoint.isPresent()) {
+            int point = userPoint.get().getPoint();
+            assertThat(histTotalPoint).isEqualTo(resultPoint);
+            assertThat(point).isEqualTo(expectedPoint);
+        }
+
+
     }
 }
