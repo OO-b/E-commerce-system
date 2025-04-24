@@ -2,6 +2,7 @@ package kr.hhplus.be.server.domain.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,10 +40,11 @@ public class ProductService {
     /**
      * 재고차감 메소드
      * */
+    @Transactional
     public void decreaseProduct(List<ProductCommand.OrderOption> commands) {
 
         for (ProductCommand.OrderOption command : commands) {
-            ProductOption option = productOptionRepository.findById(command.getProductOptionId())
+            ProductOption option = productOptionRepository.findByIdForUpdate(command.getProductOptionId())
                     .orElseThrow(() -> new IllegalArgumentException("상품 옵션이 존재하지 않음"));
 
             option.decrease(command.getQuantity()); // 재고 차감
