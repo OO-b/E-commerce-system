@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.domain.coupon;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -24,9 +24,10 @@ public class CouponService {
                 ).orElse(null); // 아니라면 null 처리
     }
 
+    @Transactional
     public CouponInfo.issuedCoupon issueCoupon(CouponCommand.Issue command) {
 
-        Coupon coupon = couponRepository.findById(command.getCouponId())
+        Coupon coupon = couponRepository.findByIdForUpdate(command.getCouponId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰이 존재하지 않습니다."));
 
         // 쿠폰 유효성 및 재고 확인

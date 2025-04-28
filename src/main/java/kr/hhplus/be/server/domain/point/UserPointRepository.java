@@ -5,6 +5,6 @@ import java.util.Optional;
 public interface UserPointRepository {
 
     Optional<UserPoint> findByUserId(int userId);
-    void save(UserPoint userPoint);
+    UserPoint save(UserPoint userPoint);
 
 }

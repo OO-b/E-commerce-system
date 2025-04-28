@@ -31,6 +31,15 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime expirationDate;
 
+    public Coupon(String couponNm, int discountRate, int issuedCount, int remainingCount, LocalDateTime issueDate, LocalDateTime expirationDate) {
+        this.couponNm = couponNm;
+        this.discountRate = discountRate;
+        this.issuedCount = issuedCount;
+        this.remainingCount = remainingCount;
+        this.issueDate = issueDate;
+        this.expirationDate = expirationDate;
+    }
+
     public boolean isExpired(LocalDateTime now) {
         return expirationDate.isBefore(now);
     }

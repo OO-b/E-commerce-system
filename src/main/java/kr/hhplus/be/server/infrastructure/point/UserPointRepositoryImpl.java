@@ -19,7 +19,7 @@ public class UserPointRepositoryImpl implements UserPointRepository {
     }
 
     @Override
-    public void save(UserPoint userPoint) {
-        userPointJpaRepository.save(userPoint);
+    public UserPoint save(UserPoint userPoint) {
+        return userPointJpaRepository.save(userPoint);
     }
 }

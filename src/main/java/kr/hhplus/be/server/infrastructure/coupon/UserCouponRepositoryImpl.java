@@ -21,6 +21,5 @@ public class UserCouponRepositoryImpl implements UserCouponRepository {
     @Override
     public void save(UserCoupon userCoupon) {
         userCouponJpaRepository.save(userCoupon);
-
     }
 }

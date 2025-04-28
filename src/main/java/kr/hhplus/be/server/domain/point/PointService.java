@@ -2,6 +2,7 @@ package kr.hhplus.be.server.domain.point;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -14,13 +15,17 @@ public class PointService {
     /**
      * 포인트 충전
      * */
+    @Transactional
     public UserPoint charge(PointCommand.Charge command) {
 
         // 포인트 조회 (없는 경우 생성)
-        UserPoint userPoint = userPointRepository.findByUserId(command.getUserId()).orElse(new UserPoint(command.getUserId(), 0));
+        UserPoint userPoint = userPointRepository.findByUserId(command.getUserId())
+                .orElseThrow(() -> new IllegalStateException("초기 포인트는 사전에 설정돼 있어야 합니다."));
 
         // 포인트 충전
         userPoint.charge(command.getPoint());
+
+        userPoint = userPointRepository.save(userPoint);
 
         // 내역 생성
         UserPointHist userPointHist = UserPointHist.of(
@@ -29,7 +34,7 @@ public class PointService {
                 PointHistoryType.CHARGE);
 
         // 사용자 포인트 저장
-        userPointRepository.save(userPoint);
+
         userPointHistRepository.save(userPointHist);
         return userPoint;
 

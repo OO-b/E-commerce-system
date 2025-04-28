@@ -37,6 +37,14 @@ public class ProductOption {
         this.createdAt = LocalDateTime.now();
     }
 
+    public ProductOption(int productId, String optionNm, int price, int remaining) {
+        this.productId = productId;
+        this.optionNm = optionNm;
+        this.price = price;
+        this.remaining = remaining;
+        this.createdAt = LocalDateTime.now();
+    }
+
     public void decrease(int quantity) {
         if(quantity <=0) throw new IllegalArgumentException("수량은 0보다 커야합니다.");
         if (remaining < quantity) throw new IllegalStateException("재고가 부족합니다.");

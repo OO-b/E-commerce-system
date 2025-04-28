@@ -22,4 +22,9 @@ public class CouponRepositoryImpl implements CouponRepository {
     public Coupon save(Coupon coupon) {
         return couponJpaRepository.save(coupon);
     }
+
+    public Optional<Coupon> findByIdForUpdate(int couponId) {
+        return couponJpaRepository.findByIdForUpdate(couponId);
+    }
+
 }

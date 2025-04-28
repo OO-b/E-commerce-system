@@ -24,4 +24,14 @@ public class ProductOptionRepositoryImpl implements ProductOptionRepository {
         return productOptionJpaRepository.findById(optionId);
     }
 
+    @Override
+    public Optional<ProductOption> findByIdForUpdate(int optionId) {
+        return productOptionJpaRepository.findByIdForUpdate(optionId);
+    }
+
+    @Override
+    public ProductOption save(ProductOption option) {
+        return productOptionJpaRepository.save(option);
+    }
+
 }
