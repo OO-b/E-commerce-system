@@ -5,7 +5,7 @@ erDiagram
 
     user {
         int user_id PK "사용자ID"
-        int user_nm "사용자명"
+        int user_name"사용자명"
         datetime created_at "생성일시"
         datetime updated_at "수정일시"
     }
@@ -35,7 +35,7 @@ erDiagram
     product_option {
         int product_option_id "상품옵션ID"
         int product_id "상품ID"
-        varchar(50) option_nm "옵션명"
+        varchar(50) option_name "옵션명"
         int price "가격"
         int remaining "재고량"
         datetime created_at "생성일시"
@@ -68,7 +68,7 @@ erDiagram
     
     coupon {
         int coupon_id PK "쿠폰ID"
-        varchar(50) coupon_nm "쿠폰명"
+        varchar(50) coupon_name "쿠폰명"
         int discount_rate "할인율"
         int issued_count "쿠폰 총 발급수량"
         int remaining_count "쿠폰 잔여수량"

@@ -25,7 +25,7 @@ public class ProductService {
                     List<ProductInfo.ProductOptionResult> options =
                             productOptionRepository.findByProductId(product.getProductId()).stream()
                                     .map(option -> new ProductInfo.ProductOptionResult(
-                                            option.getOptionNm(),
+                                            option.getOptionName(),
                                             option.getPrice()
                                     )).toList();
                         return new ProductInfo.ProductResult(
@@ -60,7 +60,7 @@ public class ProductService {
 
     public ProductOptionInfo getOptionInfoById(int optionId) {
         return productOptionRepository.findById(optionId)
-                .map(option -> new ProductOptionInfo(option.getOptionNm(), option.getPrice()))
+                .map(option -> new ProductOptionInfo(option.getOptionName(), option.getPrice()))
                 .orElseThrow(() -> new NoSuchElementException("상품 옵션이 존재하지 않습니다. id=" + optionId));
     }
 }

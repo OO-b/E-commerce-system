@@ -19,7 +19,7 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int couponId;
     @Column(nullable = false)
-    private String couponNm;
+    private String couponName;
     @Column(nullable = false)
     private int discountRate;
     @Column(nullable = false)
@@ -31,8 +31,8 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime expirationDate;
 
-    public Coupon(String couponNm, int discountRate, int issuedCount, int remainingCount, LocalDateTime issueDate, LocalDateTime expirationDate) {
-        this.couponNm = couponNm;
+    public Coupon(String couponName, int discountRate, int issuedCount, int remainingCount, LocalDateTime issueDate, LocalDateTime expirationDate) {
+        this.couponName = couponName;
         this.discountRate = discountRate;
         this.issuedCount = issuedCount;
         this.remainingCount = remainingCount;

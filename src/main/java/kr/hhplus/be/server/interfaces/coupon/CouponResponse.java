@@ -18,7 +18,7 @@ public class CouponResponse {
         @Schema(description ="쿠폰아이디")
         private int couponId;
         @Schema(description ="쿠폰명")
-        private String couponNm;
+        private String couponName;
         @Schema(description ="할인율")
         private int discountRate;
     }
@@ -32,7 +32,7 @@ public class CouponResponse {
         @Schema(description = "쿠폰ID")
         private int couponId;
         @Schema(description = "쿠폰명")
-        private String couponNm;
+        private String couponName;
         @Schema(description = "쿠폰발급일")
         private String issueDate;
         @Schema(description = "쿠폰만료일")

@@ -1,6 +1,6 @@
 CREATE TABLE user (
                       user_id INT PRIMARY KEY,          -- 사용자ID (PK)
-                      user_nm VARCHAR(255),             -- 사용자명
+                      user_name VARCHAR(255),             -- 사용자명
                       created_at DATETIME,              -- 생성일시
                       updated_at DATETIME               -- 수정일시
 );
@@ -30,7 +30,7 @@ CREATE TABLE product (
 CREATE TABLE product_option (
                                 product_option_id INT PRIMARY KEY, -- 상품옵션ID (PK)
                                 product_id INT,                    -- 상품ID
-                                option_nm VARCHAR(50),             -- 옵션명
+                                option_name VARCHAR(50),             -- 옵션명
                                 price INT,                         -- 가격
                                 remaining INT,                     -- 재고량
                                 created_at DATETIME,               -- 생성일시
@@ -63,7 +63,7 @@ CREATE TABLE payment (
 
 CREATE TABLE coupon (
                         coupon_id INT PRIMARY KEY,         -- 쿠폰ID (PK)
-                        coupon_nm VARCHAR(50),             -- 쿠폰명
+                        coupon_name VARCHAR(50),             -- 쿠폰명
                         discount_rate INT,                 -- 할인율
                         issued_count INT,                  -- 쿠폰 총 발급수량
                         remaining_count INT,               -- 쿠폰 잔여수량

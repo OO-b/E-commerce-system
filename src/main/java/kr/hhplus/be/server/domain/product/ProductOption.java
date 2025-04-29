@@ -19,7 +19,7 @@ public class ProductOption {
     @Column(nullable = false)
     private int productId;
     @Column(nullable = false)
-    private String optionNm;
+    private String optionName;
     @Column(nullable = false)
     private int price;
     @Column(nullable = false)
@@ -28,18 +28,18 @@ public class ProductOption {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ProductOption(int productOptionId, int productId, String optionNm, int price, int remaining) {
+    public ProductOption(int productOptionId, int productId, String optionName, int price, int remaining) {
         this.productOptionId = productOptionId;
         this.productId = productId;
-        this.optionNm = optionNm;
+        this.optionName = optionName;
         this.price = price;
         this.remaining = remaining;
         this.createdAt = LocalDateTime.now();
     }
 
-    public ProductOption(int productId, String optionNm, int price, int remaining) {
+    public ProductOption(int productId, String optionName, int price, int remaining) {
         this.productId = productId;
-        this.optionNm = optionNm;
+        this.optionName = optionName;
         this.price = price;
         this.remaining = remaining;
         this.createdAt = LocalDateTime.now();

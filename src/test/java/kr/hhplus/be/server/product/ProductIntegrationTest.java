@@ -37,7 +37,7 @@ public class ProductIntegrationTest {
 
         assertThat(productA.getName()).isEqualTo("nike");
         assertThat(productA.getOptions()).hasSize(2);
-        assertThat(productA.getOptions()).extracting("optionNm")
+        assertThat(productA.getOptions()).extracting("optionName")
                 .containsExactlyInAnyOrder("red 230", "orange 240");
     }
 }

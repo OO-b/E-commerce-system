@@ -25,7 +25,7 @@ public class ProductResponse {
         @Setter
         public static class ProductOption {
             @Schema(description = "상품옵션")
-            private String optionNm;
+            private String optionName;
             @Schema(description = "가격")
             private int price;
         }

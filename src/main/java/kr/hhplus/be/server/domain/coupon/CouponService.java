@@ -49,7 +49,7 @@ public class CouponService {
 
         userCouponRepository.save(userCoupon);
 
-        return new CouponInfo.issuedCoupon(coupon.getCouponId(),coupon.getCouponNm(), coupon.getDiscountRate());
+        return new CouponInfo.issuedCoupon(coupon.getCouponId(),coupon.getCouponName(), coupon.getDiscountRate());
 
     }
 }

@@ -21,7 +21,7 @@ public final class ProductInfo {
     @Setter
     @AllArgsConstructor
     public static class ProductOptionResult {
-        private String optionNm;
+        private String optionName;
         private int price;
     }
 

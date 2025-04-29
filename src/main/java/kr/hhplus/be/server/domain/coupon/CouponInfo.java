@@ -11,7 +11,7 @@ public class CouponInfo {
     @AllArgsConstructor
     public static class issuedCoupon {
         private int couponId;
-        private String couponNm;
+        private String couponName;
         private int discountRate;
     }
 }

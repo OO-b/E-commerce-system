@@ -38,7 +38,7 @@ public class ProductController implements ProductInterface {
                     List<ProductResponse.ProductOption> optionResponses = product.getOptions().stream()
                             .map(option -> {
                                 ProductResponse.ProductOption optionDto = new ProductResponse.ProductOption();
-                                optionDto.setOptionNm(option.getOptionNm());
+                                optionDto.setOptionName(option.getOptionName());
                                 optionDto.setPrice(option.getPrice());
                                 return optionDto;
                             })

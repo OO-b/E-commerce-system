@@ -45,6 +45,6 @@ public class CouponController implements CouponInterface {
 
         CouponInfo.issuedCoupon issuedCoupon = couponService.issueCoupon(new CouponCommand.Issue(couponRequest.getUserId(), couponRequest.getCouponId()));
 
-        return BaseResponse.of("0","Success", new CouponResponse.IssuedCoupon(issuedCoupon.getCouponId(), issuedCoupon.getCouponNm(), issuedCoupon.getDiscountRate()));
+        return BaseResponse.of("0","Success", new CouponResponse.IssuedCoupon(issuedCoupon.getCouponId(), issuedCoupon.getCouponName(), issuedCoupon.getDiscountRate()));
     }
 }
