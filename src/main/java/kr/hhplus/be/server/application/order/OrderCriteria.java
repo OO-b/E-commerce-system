@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ public class OrderCriteria {
     public List<ProductCommand.OrderOption> toCommandList() {
         return items.stream()
                 .flatMap(orderProduct -> orderProduct.getOptions().stream())
+                .sorted(Comparator.comparing(OrderOption::getOptionId))
                 .map(orderOption -> new ProductCommand.OrderOption(
                         orderOption.getOptionId(),
                         orderOption.getQuantity()
