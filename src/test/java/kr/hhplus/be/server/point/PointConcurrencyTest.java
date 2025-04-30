@@ -33,14 +33,14 @@ public class PointConcurrencyTest {
     private UserPointHistRepository userPointHistRepository;
 
     @Test
-    @DisplayName("포인트 충전 따닥이슈일때 - 동시성 테스트") // 낙관적락
-    void givenAvailableCoupon_whenIssuingCouponAtTheSameTime_thenFailure() throws InterruptedException {
+    @DisplayName("포인트 충전 - 동시성 테스트") // 낙관적락
+    void givenUserPoint_whenSavingPointAtTheSameTime_thenFailure() throws InterruptedException {
 
         UserPoint setUserPoint = new UserPoint(1, 0);
         userPointRepository.save(setUserPoint);
         int userId = setUserPoint.getUserId();
 
-        int threadCount = 5; // 따닥으로 5회 충전 시도
+        int threadCount = 5;
         int chargePoint = 5000;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -78,17 +78,15 @@ public class PointConcurrencyTest {
                 })
                 .sum();
 
-        if(userPoint.isPresent()) {
             int point = userPoint.get().getPoint(); // 사용자 잔액
             assertThat(histTotalPoint).isEqualTo(point); // 충전 후 포인트 잔액과 사용내역 합산내역 일치
             assertThat(point).isEqualTo(resultPoint); // 사용자 잔액과 성공 스레드 횟수 계산한 후 비교 일치
-        }
     }
 
 
     @Test
     @DisplayName("포인트 사용 - 동시성 테스트") // 낙관적락
-    void givenAvailableCoupon_whenIssuingCouponAtTheSameTime_thenFailure1() throws InterruptedException {
+    void givenUserPoint_whenUsingPointAtTheSameTime_thenFailure() throws InterruptedException {
 
         UserPoint setUserPoint = new UserPoint(1, 5000);
         userPointRepository.save(setUserPoint);
@@ -137,12 +135,9 @@ public class PointConcurrencyTest {
 
         int expectedPoint = setUserPoint.getPoint() - resultPoint;
 
-        if(userPoint.isPresent()) {
             int point = userPoint.get().getPoint();
             assertThat(histTotalPoint).isEqualTo(resultPoint);
             assertThat(point).isEqualTo(expectedPoint);
-        }
-
 
     }
 }
