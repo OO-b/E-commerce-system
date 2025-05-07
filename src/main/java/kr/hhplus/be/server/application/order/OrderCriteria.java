@@ -44,5 +44,16 @@ public class OrderCriteria {
                 .collect(Collectors.toList());
     }
 
+    public String toOptionIds() {
+        return items.stream()
+                .flatMap(orderProduct -> orderProduct.getOptions().stream())
+                .map(OrderOption::getOptionId)
+                .sorted()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+    }
+
+
+
 
 }

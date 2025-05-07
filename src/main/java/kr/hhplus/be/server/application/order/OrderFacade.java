@@ -15,6 +15,7 @@ import kr.hhplus.be.server.domain.product.ProductCommand;
 import kr.hhplus.be.server.domain.product.ProductInfo;
 import kr.hhplus.be.server.domain.product.ProductOptionInfo;
 import kr.hhplus.be.server.domain.product.ProductService;
+import kr.hhplus.be.server.interfaces.common.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,12 @@ public class OrderFacade {
     private final CouponService couponService;
     private final PointService pointService;
 
+    @DistributedLock(
+            topic = "stock",
+            keyExpression = "#criteria.toOptionIds()",
+            waitTime = 5,
+            leaseTime = 3
+    )
     @Transactional
     public OrderResult order(OrderCriteria criteria) {
 

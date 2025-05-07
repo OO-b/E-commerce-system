@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -47,10 +48,13 @@ public class ProductConcurrencyTest {
         int decreaseAmount = 1;
 
         for (int i = 0; i < numberOfThreads; i++) {
+            List<ProductCommand.OrderOption> orderOptions = new ArrayList<>();
+
             executor.submit(() -> {
                 try {
                     ProductCommand.OrderOption command = new ProductCommand.OrderOption(testOptionId, decreaseAmount);
-                    productService.decreaseProduct(List.of(command));
+                    orderOptions.add(command);
+                    productService.decreaseProduct(ProductCommand.DecreaseStock.of(orderOptions));
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
