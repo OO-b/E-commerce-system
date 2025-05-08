@@ -1,13 +1,11 @@
 spring:
   application:
     name: hhplus
-  profiles:
-    active: local
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 3
       connection-timeout: 10000
       max-lifetime: 60000
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,20 +14,28 @@ spring:
     generate-ddl: false
     show-sql: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
-      timezone.default_storage: NORMALIZE_UTC
-      jdbc.time_zone: UTC
-      show_sql: true
-      format_sql: true
-      highlight_sql: true
-      use_sql_comments: true
+      hibernate:
+        globally_quoted_identifiers: true
+      hibernate.timezone.default_storage: NORMALIZE_UTC
+      hibernate.jdbc.time_zone: UTC
+  data:
     redis:
-      host: localhost
+      host: 127.0.0.1
       port: 6379
 
-redisson:
-  address: redis://localhost:6379
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,prometheus"
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+  port: 9001
 
 ---
 spring.config.activate.on-profile: local, test
@@ -39,3 +45,7 @@ spring:
     url: jdbc:mysql://localhost:3308/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
     username: application
     password: application
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

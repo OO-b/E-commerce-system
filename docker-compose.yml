@@ -1,5 +1,48 @@
-version: '3'
+#version: '3'
+#services:
+#  mysql:
+#    image: mysql:8.0
+#    ports:
+#      - "3308:3306"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#      - MYSQL_USER=application
+#      - MYSQL_PASSWORD=application
+#      - MYSQL_DATABASE=hhplus
+#    volumes:
+#      - ./data/mysql/:/var/lib/mysql
+#  redis:
+#    image: redis:7.0.0
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - ./data/redis/:/data
+#
+#networks:
+#  default:
+#    driver: bridge
+
 services:
+#  nginx:
+#    image: nginx:1.25.2
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./docker_file/nginx.conf:/etc/nginx/nginx.conf
+#    depends_on:
+#      - spring
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1'
+#          memory: 1G
+
+#  nginx_exporter:
+#    image: nginx/nginx-prometheus-exporter
+#    ports:
+#      - "9113:9113"
+#    command: -nginx.scrape-uri=http://server-java-nginx-1:80/nginx_status
+
   mysql:
     image: mysql:8.0
     ports:
@@ -11,13 +54,83 @@ services:
       - MYSQL_DATABASE=hhplus
     volumes:
       - ./data/mysql/:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 8G
+
+  mysql_exporter:
+    image: prom/mysqld-exporter
+    volumes:
+      - ./docker_file/my.cnf:/.my.cnf
+    ports:
+      - "9104:9104"
+
   redis:
-    image: redis:7.0.0
+    image: redis:7.4.3
     ports:
       - "6379:6379"
-    volumes:
-      - ./data/redis/:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 8G
 
-networks:
-  default:
-    driver: bridge
+  redis_exporter:
+    image: oliver006/redis_exporter
+    ports:
+      - "9121:9121"
+    environment:
+      - REDIS_ADDR=redis://e-commerce-system-redis-1:6379
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker_file/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --web.enable-remote-write-receiver
+      - --enable-feature=native-histograms
+      - --config.file=/etc/prometheus/prometheus.yml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker_file/grafana-storage:/var/lib/grafana
+    user: "$UID:$GID"
+
+  k6:
+    image: grafana/k6
+    volumes:
+      - ./k6Test:/scripts
+    command: run -o experimental-prometheus-rw /scripts/test.js
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true
+    extra_hosts:
+       - "host.docker.internal:host-gateway"
+    depends_on:
+      - prometheus
+
+#  spring:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=load
+#    depends_on:
+#      - mysql
+#      - redis
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1'
+#          memory: 2G
+#    ports:
+#      - "8080:8080"
