@@ -1,0 +1,57 @@
+scrape_configs:
+  - job_name: 'server-java-spring-1'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['host.docker.internal:9001']
+        labels:
+          application: 'server-java-spring-1'
+
+#  - job_name: 'server-java-spring-2'
+#    metrics_path: '/actuator/prometheus'
+#    scrape_interval: 3s
+#    static_configs:
+#      - targets: [ 'server-java-spring-2:8080' ]
+#        labels:
+#          application: 'server-java-spring-2'
+#
+#  - job_name: 'server-java-spring-3'
+#    metrics_path: '/actuator/prometheus'
+#    scrape_interval: 3s
+#    static_configs:
+#      - targets: ['server-java-spring-3:8080']
+#        labels:
+#          application: 'server-java-spring-3'
+#
+#
+#  - job_name: 'server-java-spring-4'
+#    metrics_path: '/actuator/prometheus'
+#    scrape_interval: 3s
+#    static_configs:
+#      - targets: ['server-java-spring-4:8080']
+#        labels:
+#          application: 'server-java-spring-4'
+#
+#
+#  - job_name: 'server-java-spring-5'
+#    metrics_path: '/actuator/prometheus'
+#    scrape_interval: 3s
+#    static_configs:
+#      - targets: ['server-java-spring-5:8080']
+#        labels:
+#          application: 'server-java-spring-5'
+
+  - job_name: redis_exporter
+    scrape_interval: 3s
+    static_configs:
+    - targets: ['e-commerce-system-redis_exporter-1:9121']
+
+  - job_name: mysql_exporter
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ 'e-commerce-system-mysql_exporter-1:9104' ]
+
+#  - job_name: nginx_exporter
+#    scrape_interval: 3s
+#    static_configs:
+#      - targets: [ 'e-commerce-system-nginx_exporter-1:9113' ]

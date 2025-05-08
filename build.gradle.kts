@@ -5,9 +5,14 @@ plugins {
 }
 
 fun getGitHash(): String {
-	return providers.exec {
-		commandLine("git", "rev-parse", "--short", "HEAD")
-	}.standardOutput.asText.get().trim()
+	val process = ProcessBuilder("git", "rev-parse", "--short", "HEAD")
+		.directory(project.rootDir)
+		.redirectOutput(ProcessBuilder.Redirect.PIPE)
+		.redirectError(ProcessBuilder.Redirect.PIPE)
+		.start()
+
+	val output = process.inputStream.bufferedReader().readText().trim()
+	return output.ifEmpty { "unknown" }
 }
 
 group = "kr.hhplus.be"
@@ -37,10 +42,13 @@ dependencies {
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 
-    // DB
+	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
 
-    // Test
+	// Redisson
+	implementation("org.redisson:redisson-spring-boot-starter:3.27.2")
+
+	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
@@ -50,6 +58,12 @@ dependencies {
 	// Lombok (버전 없이 추가)
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+	testCompileOnly("org.projectlombok:lombok")
+	testAnnotationProcessor("org.projectlombok:lombok")
+
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+
+	implementation("io.micrometer:micrometer-registry-prometheus")
 
 }
 

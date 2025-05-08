@@ -28,4 +28,9 @@ public class Product {
         this.createdAt = LocalDateTime.now();
     }
 
+    public Product(String name) {
+        this.name = name;
+        this.createdAt = LocalDateTime.now();
+    }
+
 }
