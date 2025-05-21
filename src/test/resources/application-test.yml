@@ -11,3 +11,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop  # 테스트용 DB를 매번 초기화
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    org.springframework.cache: trace
+
+redisson:
+  address: redis://localhost:6379

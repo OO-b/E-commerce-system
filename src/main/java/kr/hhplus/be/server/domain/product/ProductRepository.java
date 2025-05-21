@@ -7,5 +7,5 @@ public interface ProductRepository {
 
     List<Product> findAll();
     Optional<Product> findById(int productId);
-    void save(Product product);
+    Product save(Product product);
 }

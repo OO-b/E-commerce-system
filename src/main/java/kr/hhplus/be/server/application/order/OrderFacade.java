@@ -15,6 +15,7 @@ import kr.hhplus.be.server.domain.product.ProductCommand;
 import kr.hhplus.be.server.domain.product.ProductInfo;
 import kr.hhplus.be.server.domain.product.ProductOptionInfo;
 import kr.hhplus.be.server.domain.product.ProductService;
+import kr.hhplus.be.server.interfaces.common.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,11 +32,18 @@ public class OrderFacade {
     private final CouponService couponService;
     private final PointService pointService;
 
+    @DistributedLock(
+            topic = "stock",
+            keyExpression = "#criteria.toOptionIds()",
+            waitTime = 5,
+            leaseTime = 3
+    )
+    @Transactional
     public OrderResult order(OrderCriteria criteria) {
 
         // 재고차감
         List<ProductCommand.OrderOption> orderOptionCommand = criteria.toCommandList();
-        productService.decreaseProduct(orderOptionCommand);
+        productService.decreaseProduct(ProductCommand.DecreaseStock.of(orderOptionCommand));
 
         //쿠폰 유효성 체크
         Coupon coupon = null;
@@ -74,7 +82,7 @@ public class OrderFacade {
         } catch(Exception e) { // 결제 실패
              // 결제실패 상태처리
             orderService.failOrder(orderInfo);
-             throw new PaymentFailedException();
+            throw new PaymentFailedException();
         }
 
         return new OrderResult(orderInfo.getOrderId(), orderItems.size(), orderInfo.getTotalAmount());
